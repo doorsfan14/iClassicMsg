@@ -12,6 +12,7 @@ iClassicMsg recreates the classic iOS 17–18 Messages interface on iPhone as cl
 - [Bubble colors](#bubble-colors)
 - [Design](#design)
 - [Open source](#open-source)
+- [Community guidelines](#community-guidelines)
 - [Feedback and bug reports](#feedback-and-bug-reports)
 - [A note about Apple](#a-note-about-apple)
 
@@ -57,6 +58,20 @@ The iPhone client recreates the classic Messages interface, while Android keeps 
 iClassicMsg is an open-source project. Contributions, thoughtful suggestions, and constructive feedback are welcome.
 
 When contributing, please keep changes clear and focused, explain what they improve, and consider how they fit the experience on each platform. For larger changes, opening an issue to discuss the idea first can help keep development coordinated.
+
+## Community guidelines
+
+We want iClassicMsg to remain a respectful, independent revival project. Please help protect the project and its contributors by following these guidelines:
+
+- **Do not submit Apple's proprietary source code or leaked internal materials.** Implement features independently and only contribute code you have the right to share.
+- **Do not add Apple-owned artwork, logos, sounds, fonts, or other assets unless their use is clearly authorized.** Prefer original assets or resources with licenses that permit redistribution.
+- **Do not present iClassicMsg as an official Apple app or imply that Apple sponsors, endorses, or supports it.** Keep the independent-project disclaimer intact.
+- **Do not use the project to impersonate Apple, deceive users, or mislead people about who operates the app.**
+- **Do not remove copyright, trademark, license, or attribution notices** from assets or code that require them.
+- **Do not upload private information, credentials, signing keys, service-account files, or other secrets** to issues, pull requests, or the repository.
+- **Do not make unauthorized commercial use of third-party assets or branding.** Ask before contributing material if you are unsure you have permission to redistribute it.
+
+If a contribution raises a rights or licensing concern, maintainers may reject or remove it. These guidelines are intended to reduce avoidable risk; they do not guarantee that every use of an interface or asset is legally permitted. Contributors are responsible for ensuring they have the rights needed for material they submit.
 
 ## Feedback and bug reports
 
