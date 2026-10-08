@@ -1,8 +1,8 @@
 # iClassicMsg
 
-A 1:1 recreation of the classic iOS 18 Messages experience, with cross-platform messaging support for iPhone and Android.
+A 1:1 recreation of the classic iOS 17–18 Messages experience, with cross-platform messaging support for iPhone and Android.
 
-iClassicMsg recreates the classic iOS 18 Messages interface on iPhone as closely as possible, while the Android client uses a Google Messages-inspired design. Both platforms can take part in the same conversations without forcing their interfaces to look identical.
+iClassicMsg recreates the classic iOS 17–18 Messages interface on iPhone as closely as possible, while the Android client uses a Google Messages-inspired design. Both platforms can take part in the same conversations without forcing their interfaces to look identical.
 
 ## Table of contents
 
@@ -17,13 +17,13 @@ iClassicMsg recreates the classic iOS 18 Messages interface on iPhone as closely
 
 ## About iClassicMsg
 
-iClassicMsg brings back the classic iOS 18 Messages experience in a standalone cross-platform messaging app. The iPhone client aims for a 1:1 recreation of that interface, while Android gets its own Google Messages-inspired client.
+iClassicMsg brings back the classic iOS 17–18 Messages experience in a standalone cross-platform messaging app. The iPhone client aims for a 1:1 recreation of that interface, while Android gets its own Google Messages-inspired client.
 
 iClassicMsg is a standalone app. It does not replace the Messages app that comes with an iPhone.
 
 ## A 1:1 recreation on iPhone
 
-The iPhone interface recreates the iOS 18-era Messages app, including its classic conversation layout, message bubbles, navigation, and overall appearance.
+The iPhone interface recreates the iOS 17–18 Messages app, including its classic conversation layout, message bubbles, navigation, and overall appearance.
 
 The design stays with the classic iOS look rather than the newer Liquid Glass style. SwiftUI and custom components help keep the interface consistent on newer versions of iOS.
 
@@ -44,7 +44,7 @@ The colors are a visual distinction within iClassicMsg. They do not indicate tha
 
 iClassicMsg is built around a few simple principles:
 
-- **1:1 iPhone recreation.** Reproduce the classic iOS 18 Messages interface as closely as possible.
+- **1:1 iPhone recreation.** Reproduce the classic iOS 17–18 Messages interface as closely as possible.
 - **Native to each platform.** Keep the Android client aligned with Android design conventions.
 - **Simple and readable.** Make conversations easy to follow.
 - **Consistent messaging.** Keep the experience coherent across both platforms.
@@ -71,7 +71,7 @@ Feedback helps make software better. When reporting a bug, include as much usefu
 
 Please avoid sharing private conversations or other personal information in screenshots and reports.
 
-Suggestions about the iPhone and Android clients are both welcome. The aim is to preserve the 1:1 iOS 18 Messages recreation on iPhone while keeping the Android client right for its platform.
+Suggestions about the iPhone and Android clients are both welcome. The aim is to preserve the 1:1 iOS 17–18 Messages recreation on iPhone while keeping the Android client right for its platform.
 
 ## A note about Apple
 
@@ -79,4 +79,4 @@ iClassicMsg is an independent project inspired by the classic Messages experienc
 
 ---
 
-**iClassicMsg — a 1:1 recreation of classic iOS 18 Messages for iPhone, with Android support.**
+**iClassicMsg — a 1:1 recreation of classic iOS 17–18 Messages for iPhone, with Android support.**
