@@ -37,6 +37,15 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
+      - name: Ensure Firebase config is bundled
+        working-directory: iOS
+        run: |
+          APP_PATH="build/Build/Products/Debug-iphoneos/iClassicMsg.app"
+          test -f GoogleService-Info.plist
+          cp GoogleService-Info.plist "$APP_PATH/GoogleService-Info.plist"
+          test -f "$APP_PATH/GoogleService-Info.plist"
+          /usr/libexec/PlistBuddy -c 'Print :BUNDLE_ID' "$APP_PATH/GoogleService-Info.plist"
+
       - name: Package unsigned IPA
         working-directory: iOS
         run: |
