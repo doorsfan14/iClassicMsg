@@ -2,149 +2,83 @@
 
 A revival of the classic iMessage experience, bringing back the nostalgic iOS 18 Messages interface with support for both iPhone and Android.
 
-iClassicMsg aims to bring people together in one familiar messaging experience, without making both platforms look identical. On iPhone, the app takes inspiration from the classic Apple Messages design. On Android, it follows the familiar look and feel of Google Messages.
-
-> **Project status: Early development.** iClassicMsg is being built, and the ideas described below are the project's goals—not a promise that every feature is available today.
+iClassicMsg brings a familiar messaging experience to both platforms without making them look identical. The iPhone interface takes inspiration from the classic Apple Messages design, while the Android interface follows the familiar look and feel of Google Messages.
 
 ## Table of contents
 
 - [About iClassicMsg](#about-iclassicmsg)
-- [The idea](#the-idea)
 - [A familiar experience on every platform](#a-familiar-experience-on-every-platform)
 - [Bubble colors](#bubble-colors)
-- [Planned features](#planned-features)
-- [Design goals](#design-goals)
-- [Platforms](#platforms)
-- [Project status](#project-status)
-- [Getting involved](#getting-involved)
+- [Design](#design)
+- [Open source](#open-source)
 - [Feedback and bug reports](#feedback-and-bug-reports)
 - [A note about Apple](#a-note-about-apple)
 
 ## About iClassicMsg
 
-Remember the classic Messages experience? iClassicMsg is a project built around bringing back that familiar look and feel while making it possible for iPhone and Android users to chat with each other in the same app.
+Remember the classic Messages experience? iClassicMsg brings that familiar look and feel to a cross-platform messaging app, making conversations between iPhone and Android users feel natural.
 
-The goal is simple: **a classic Messages experience on iPhone, a familiar Google Messages-style experience on Android, and one shared place to talk.**
+The idea is simple: a classic Messages-inspired experience on iPhone, a familiar Google Messages-inspired experience on Android, and one place to chat with people on either platform.
 
-The two apps do not need to look exactly alike. Each platform can feel at home on its own device while still being part of the same messaging experience.
-
-## The idea
-
-Messaging should feel familiar, not complicated. iClassicMsg is being designed around a few simple ideas:
-
-- Bring back the classic iOS Messages look that people remember.
-- Let iPhone and Android users chat with each other.
-- Keep the Android interface familiar to Android users.
-- Support both individual conversations and group chats.
-- Make it easy to recognize which platform a person is using.
-- Keep the app focused on conversations rather than unnecessary extras.
-
-iClassicMsg is a standalone project. It is not intended to replace the Messages app that comes with an iPhone.
+iClassicMsg is a standalone app. It does not replace the Messages app that comes with an iPhone.
 
 ## A familiar experience on every platform
 
 ### iPhone
 
-The iOS version aims to recreate the familiar appearance of the classic iOS 18 Messages app. That includes the overall conversation layout, familiar navigation, message bubbles, and the clean, straightforward style of older iOS interfaces.
+The iPhone interface draws inspiration from the iOS 18-era Messages app, with familiar conversation layouts, message bubbles, navigation, and a clean, straightforward appearance.
 
-The design goal is to keep that classic look even when the app runs on newer versions of iOS. The implementation will use SwiftUI, with custom components where needed to keep the appearance consistent.
+The design emphasizes the classic iOS look rather than the newer Liquid Glass style. SwiftUI and custom components help keep the interface consistent on newer versions of iOS.
 
 ### Android
 
-The Android version aims to feel natural on Android devices, taking inspiration from Google Messages rather than forcing an iPhone interface onto Android.
-
-That means an Android-friendly layout and interactions, while keeping conversations compatible with the iPhone version.
+The Android interface takes inspiration from Google Messages and familiar Android design conventions. It is designed to feel at home on Android instead of simply copying the iPhone interface.
 
 ### One shared experience
 
-Although the interfaces are platform-specific, iPhone and Android users are intended to be able to communicate with one another through iClassicMsg. A conversation should still feel like the same conversation, regardless of which phone each person uses.
+iPhone and Android users can be part of the same messaging experience while each app keeps the look and interactions that make sense for its platform.
 
 ## Bubble colors
 
-One of the fun parts of iClassicMsg is the platform-based bubble color idea.
+iClassicMsg uses platform-inspired bubble colors to make conversations easy to recognize:
 
-- **Blue** represents messages associated with iPhone users.
-- **Green** represents messages associated with Android users in the iOS interface.
+- **Blue** represents iPhone users.
+- **Green** represents Android users in the iPhone interface.
 
-The aim is to make the platform distinction visible in the conversation instead of hiding it. The colors are a visual choice for iClassicMsg; they do not mean that someone on one platform gets a different level of access to the app's features.
+The colors are a visual distinction within iClassicMsg. They do not indicate that one platform's users are more important or have a different status.
 
-## Planned features
+## Design
 
-The following are goals for the project as development progresses. They may change as the app takes shape.
+iClassicMsg is built around a few simple principles:
 
-- **One-to-one conversations** — chat with another iClassicMsg user.
-- **Cross-platform messaging** — communicate between iPhone and Android.
-- **Group chats** — bring friends together in a shared conversation, even when they use different kinds of phones.
-- **Group names and photos** — make group conversations easier to recognize.
-- **Platform-based bubble colors** — distinguish iPhone and Android participants visually.
-- **Conversation history** — make it easy to return to previous conversations.
-- **Familiar platform interfaces** — classic Messages-inspired styling on iPhone and Google Messages-inspired styling on Android.
-- **A straightforward experience** — keep the everyday act of sending and reading messages simple.
+- **Classic appearance.** Bring back the familiar iOS 18-era Messages aesthetic.
+- **Native to each platform.** Keep the iPhone and Android experiences comfortable and recognizable.
+- **Simple and readable.** Make conversations easy to follow.
+- **Consistent messaging.** Keep the experience coherent across both platforms.
+- **Focused interface.** Keep attention on people and conversations.
 
-These features are part of the direction for iClassicMsg. Please check the repository's current code and project updates to see what is actually implemented.
+The goal is not to make Android pretend to be iOS or iOS pretend to be Android. Each platform gets its own familiar interface, while both remain part of the iClassicMsg experience.
 
-## Design goals
+## Open source
 
-iClassicMsg has a clear design direction:
+iClassicMsg is an open-source project. Contributions, thoughtful suggestions, and constructive feedback are welcome.
 
-- **Classic, not redesigned.** The iPhone interface should take inspiration from the iOS 18-era Messages app instead of adopting the newer Liquid Glass look.
-- **Native to each platform.** The iPhone and Android apps should respect the conventions users already know.
-- **Simple and readable.** Conversations should be easy to follow and comfortable to use.
-- **Consistent where it matters.** Both clients should support the same core conversations and work together as parts of one app.
-- **No unnecessary clutter.** The interface should focus on people and their messages.
-
-The goal is not to make Android pretend to be iOS or to make iOS pretend to be Android. It is to bring the same messaging experience to both, using an interface that suits each platform.
-
-## Platforms
-
-### iOS
-
-The iOS client is planned in SwiftUI, with a minimum deployment target of iOS 15.4. The interface will use custom SwiftUI styling and components where needed to preserve the intended classic appearance on newer system versions.
-
-### Android
-
-An Android client is part of the plan, with an interface inspired by Google Messages and familiar Android design conventions.
-
-Both clients are part of the same project, but their layouts can be built in ways that make sense for their respective platforms.
-
-## Project status
-
-iClassicMsg is in early development. The project is starting with its identity and design direction, and the implementation will grow over time.
-
-At this stage, the feature list above describes the intended direction rather than a list of finished features. There may not yet be an installable app or a release available for everyday use.
-
-As development progresses, this README can be updated with screenshots, setup instructions, supported versions, and release information.
-
-## Getting involved
-
-iClassicMsg is intended to be an open-source project, and contributions may become useful as the codebase grows.
-
-If you want to help:
-
-1. Explore the repository and check what is currently implemented.
-2. Look for an existing issue or discussion about the change you have in mind.
-3. Keep proposed changes focused and explain what they improve.
-4. For interface changes, describe which platform they affect and how they fit the project's design goals.
-5. Be respectful and constructive when discussing ideas or reviewing contributions.
-
-Before spending time on a large change, it is a good idea to open an issue to discuss the idea first. That helps keep the project moving in a consistent direction.
+When contributing, please keep changes clear and focused, explain what they improve, and consider how they fit the experience on each platform. For larger changes, opening an issue to discuss the idea first can help keep development coordinated.
 
 ## Feedback and bug reports
 
-Feedback is welcome, especially when it helps make the app easier to understand or more comfortable to use.
+Feedback helps make software better. When reporting a bug, include as much useful information as you can:
 
-When reporting a bug, please include:
-
-- Which platform you are using.
-- The device and operating system version, if known.
+- The platform and device you are using.
+- The operating system version, if known.
 - What you expected to happen.
 - What actually happened.
-- Steps to reproduce the problem, if possible.
-- A screenshot, when it helps explain a visual issue.
+- Steps to reproduce the issue, if possible.
+- A screenshot, if it helps explain the problem.
 
-Please avoid including private conversations or other personal information in screenshots and reports.
+Please avoid sharing private conversations or other personal information in screenshots and reports.
 
-Suggestions for the classic iPhone interface and the Android interface are both welcome. The aim is to make each client feel right for its platform while keeping the overall experience consistent.
+Suggestions about the iPhone and Android interfaces are both welcome. The aim is to make each client feel right for its platform while keeping the overall experience consistent.
 
 ## A note about Apple
 
