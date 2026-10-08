@@ -27,7 +27,6 @@ private struct ChatMessage: Identifiable {
 struct MessagesListView: View {
     @State private var searchText = ""
     @State private var selectedChat: Chat?
-    @State private var showingConversation = false
     @State private var showingCompose = false
     @State private var chats: [Chat] = [
         Chat(name: "Alex Morgan", preview: "That sounds good! See you then.", time: "now",
@@ -60,98 +59,120 @@ struct MessagesListView: View {
 
     private var filteredChats: [Chat] {
         guard !searchText.isEmpty else { return chats }
-        return chats.filter { $0.name.localizedCaseInsensitiveContains(searchText) || $0.preview.localizedCaseInsensitiveContains(searchText) }
+        return chats.filter {
+            $0.name.localizedCaseInsensitiveContains(searchText) ||
+            $0.preview.localizedCaseInsensitiveContains(searchText)
+        }
     }
 
     var body: some View {
-        NavigationStack {
-            List {
-                ForEach(filteredChats) { chat in
-                    Button {
-                        selectedChat = chat
-                        showingConversation = true
-                    } label: {
-                        ChatRow(chat: chat)
-                    }
-                    .buttonStyle(.plain)
-                    .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16))
-                    .listRowSeparator(.visible)
-                }
-            }
-            .listStyle(.plain)
-            .safeAreaInset(edge: .top, spacing: 0) {
-                VStack(spacing: 8) {
-                    HStack(alignment: .firstTextBaseline) {
-                        Button("Edit") {}
-                            .font(.system(size: 17))
-                        Spacer()
-                        Text("Messages")
-                            .font(.system(size: 17, weight: .semibold))
-                        Spacer()
-                        Button {
-                            showingCompose = true
-                        } label: {
-                            Image(systemName: "square.and.pencil")
-                                .font(.system(size: 21, weight: .regular))
-                        }
-                        .accessibilityLabel("New message")
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.top, 8)
-
-                    HStack(spacing: 8) {
-                        Image(systemName: "magnifyingglass")
-                            .foregroundStyle(.secondary)
-                        TextField("Search", text: $searchText)
-                            .font(.system(size: 17))
-                        if !searchText.isEmpty {
-                            Button {
-                                searchText = ""
-                            } label: {
-                                Image(systemName: "xmark.circle.fill")
-                                    .foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-                    .padding(.horizontal, 9)
-                    .padding(.vertical, 8)
-                    .background(Color(.systemGray6))
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                    .padding(.horizontal, 16)
-                    .padding(.bottom, 8)
-                }
-                .background(Color(.systemBackground))
-            }
-            .toolbar(.hidden, for: .navigationBar)
-            .navigationDestination(isPresented: $showingConversation) {
-                if let chat = selectedChat {
-                    ConversationView(chat: chat) { updatedChat in
-                        if let index = chats.firstIndex(where: { $0.id == updatedChat.id }) {
-                            chats[index] = updatedChat
-                            selectedChat = updatedChat
-                        }
-                    }
-                }
-            }
-            .sheet(isPresented: $showingCompose) {
-                ComposeMessageView { name, text, platform in
-                    let newChat = Chat(
-                        name: name,
-                        preview: text,
-                        time: "now",
-                        initials: String(name.split(separator: " ").prefix(2).compactMap(\.first)),
-                        color: .blue,
-                        platform: platform,
-                        messages: [ChatMessage(text: text, isOutgoing: true, platform: .iPhone)]
-                    )
-                    chats.insert(newChat, at: 0)
-                    showingCompose = false
-                    selectedChat = newChat
-                    showingConversation = true
-                }
+        Group {
+            if let chat = selectedChat {
+                ConversationView(
+                    chat: chat,
+                    onBack: { selectedChat = nil },
+                    onUpdate: updateChat
+                )
+            } else if showingCompose {
+                ComposeMessageView(
+                    onCancel: { showingCompose = false },
+                    onSend: createConversation
+                )
+            } else {
+                messagesHome
             }
         }
         .tint(Color(red: 0.0, green: 0.48, blue: 1.0))
+        .background(Color.white.ignoresSafeArea())
+        .preferredColorScheme(.light)
+    }
+
+    private var messagesHome: some View {
+        VStack(spacing: 0) {
+            HStack(alignment: .firstTextBaseline) {
+                Button("Edit") {}
+                    .font(.system(size: 17))
+                Spacer()
+                Text("Messages")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(.black)
+                Spacer()
+                Button {
+                    showingCompose = true
+                } label: {
+                    Image(systemName: "square.and.pencil")
+                        .font(.system(size: 21, weight: .regular))
+                }
+                .accessibilityLabel("New message")
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 8)
+            .padding(.bottom, 12)
+
+            HStack(spacing: 8) {
+                Image(systemName: "magnifyingglass")
+                    .foregroundStyle(Color.gray)
+                TextField("Search", text: $searchText)
+                    .font(.system(size: 17))
+                    .foregroundStyle(.black)
+                if !searchText.isEmpty {
+                    Button {
+                        searchText = ""
+                    } label: {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(Color.gray)
+                    }
+                }
+            }
+            .padding(.horizontal, 9)
+            .padding(.vertical, 8)
+            .background(Color(red: 0.93, green: 0.93, blue: 0.95))
+            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .padding(.horizontal, 16)
+            .padding(.bottom, 8)
+
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach(filteredChats) { chat in
+                        Button {
+                            selectedChat = chat
+                        } label: {
+                            ChatRow(chat: chat)
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 8)
+
+                        Divider()
+                            .padding(.leading, 80)
+                    }
+                }
+            }
+        }
+        .background(Color.white)
+    }
+
+    private func updateChat(_ updatedChat: Chat) {
+        if let index = chats.firstIndex(where: { $0.id == updatedChat.id }) {
+            chats[index] = updatedChat
+        }
+        selectedChat = updatedChat
+    }
+
+    private func createConversation(name: String, text: String, platform: ChatPlatform) {
+        let initials = String(name.split(separator: " ").prefix(2).compactMap(\.first))
+        let newChat = Chat(
+            name: name,
+            preview: text,
+            time: "now",
+            initials: initials.isEmpty ? "?" : initials,
+            color: .blue,
+            platform: platform,
+            messages: [ChatMessage(text: text, isOutgoing: true, platform: .iPhone)]
+        )
+        chats.insert(newChat, at: 0)
+        showingCompose = false
+        selectedChat = newChat
     }
 }
 
@@ -172,23 +193,23 @@ private struct ChatRow: View {
                 HStack(spacing: 6) {
                     Text(chat.name)
                         .font(.system(size: 17, weight: chat.unread ? .semibold : .regular))
-                        .foregroundStyle(.primary)
+                        .foregroundStyle(.black)
                         .lineLimit(1)
                     Spacer(minLength: 4)
                     Text(chat.time)
                         .font(.system(size: 14))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.gray)
                 }
                 HStack(spacing: 6) {
                     Text(chat.preview)
                         .font(.system(size: 15))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(Color.gray)
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
                     Spacer(minLength: 0)
                     Image(systemName: "chevron.right")
                         .font(.system(size: 12, weight: .semibold))
-                        .foregroundStyle(Color(.tertiaryLabel))
+                        .foregroundStyle(Color(white: 0.78))
                 }
             }
         }
@@ -197,21 +218,65 @@ private struct ChatRow: View {
 }
 
 private struct ConversationView: View {
-    @Environment(\.dismiss) private var dismiss
-    @State var chat: Chat
-    @State private var draft = ""
+    let chat: Chat
+    var onBack: () -> Void
     var onUpdate: (Chat) -> Void
+    @State private var messages: [ChatMessage]
+    @State private var draft = ""
+
+    init(chat: Chat, onBack: @escaping () -> Void, onUpdate: @escaping (Chat) -> Void) {
+        self.chat = chat
+        self.onBack = onBack
+        self.onUpdate = onUpdate
+        _messages = State(initialValue: chat.messages)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
+            HStack {
+                Button(action: onBack) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 20, weight: .medium))
+                        Text("Messages")
+                            .font(.system(size: 17))
+                    }
+                }
+                Spacer()
+                VStack(spacing: 3) {
+                    Circle().fill(chat.color.gradient)
+                        .frame(width: 34, height: 34)
+                        .overlay(
+                            Text(chat.initials)
+                                .font(.system(size: 11, weight: .semibold))
+                                .foregroundStyle(.white)
+                        )
+                    Text(chat.name)
+                        .font(.system(size: 12))
+                        .foregroundStyle(.black)
+                        .lineLimit(1)
+                }
+                Spacer()
+                Button {} label: {
+                    Image(systemName: "video")
+                        .font(.system(size: 20))
+                }
+                .accessibilityLabel("Video call")
+            }
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(Color.white)
+
+            Divider()
+
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(spacing: 10) {
                         Text("iClassicMsg")
                             .font(.system(size: 12))
-                            .foregroundStyle(.secondary)
+                            .foregroundStyle(Color.gray)
                             .padding(.top, 14)
-                        ForEach(chat.messages) { message in
+                        ForEach(messages) { message in
                             MessageBubble(message: message)
                                 .id(message.id)
                         }
@@ -220,58 +285,47 @@ private struct ConversationView: View {
                     .padding(.vertical, 10)
                     .frame(maxWidth: .infinity)
                 }
-                .onChange(of: chat.messages.count) {
-                    if let last = chat.messages.last { proxy.scrollTo(last.id, anchor: .bottom) }
+                .onChange(of: messages.count) {
+                    if let last = messages.last { proxy.scrollTo(last.id, anchor: .bottom) }
                 }
             }
+            .background(Color.white)
 
             Divider()
             HStack(alignment: .bottom, spacing: 9) {
                 Image(systemName: "plus.circle")
-                    .font(.system(size: 27, weight: .regular))
-                    .foregroundStyle(.secondary)
+                    .font(.system(size: 27))
+                    .foregroundStyle(Color.gray)
                 TextField("iMessage", text: $draft, axis: .vertical)
                     .lineLimit(1...5)
                     .font(.system(size: 16))
                     .padding(.horizontal, 12)
                     .padding(.vertical, 9)
-                    .overlay(Capsule().stroke(Color(.systemGray3), lineWidth: 1))
-                Button {
-                    sendMessage()
-                } label: {
+                    .overlay(Capsule().stroke(Color(white: 0.78), lineWidth: 1))
+                Button(action: sendMessage) {
                     Image(systemName: "arrow.up.circle.fill")
                         .font(.system(size: 29))
-                        .foregroundStyle(draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Color(.systemGray3) : Color(red: 0, green: 0.48, blue: 1))
+                        .foregroundStyle(draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Color(white: 0.78) : Color(red: 0, green: 0.48, blue: 1))
                 }
                 .disabled(draft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 9)
-            .background(Color(.systemBackground))
+            .background(Color.white)
         }
-        .background(Color(.systemBackground))
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                VStack(spacing: 2) {
-                    Circle().fill(chat.color.gradient).frame(width: 30, height: 30)
-                        .overlay(Text(chat.initials).font(.system(size: 10, weight: .semibold)).foregroundStyle(.white))
-                    Text(chat.name)
-                        .font(.system(size: 12))
-                        .foregroundStyle(.primary)
-                }
-            }
-        }
+        .background(Color.white)
     }
 
     private func sendMessage() {
         let text = draft.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty else { return }
-        chat.messages.append(ChatMessage(text: text, isOutgoing: true, platform: .iPhone))
-        chat.preview = text
-        chat.time = "now"
+        messages.append(ChatMessage(text: text, isOutgoing: true, platform: .iPhone))
         draft = ""
-        onUpdate(chat)
+        var updated = chat
+        updated.messages = messages
+        updated.preview = text
+        updated.time = "now"
+        onUpdate(updated)
     }
 }
 
@@ -280,7 +334,7 @@ private struct MessageBubble: View {
 
     private var bubbleColor: Color {
         if message.isOutgoing { return Color(red: 0.0, green: 0.48, blue: 1.0) }
-        return message.platform == .android ? Color(red: 0.20, green: 0.68, blue: 0.36) : Color(.systemGray5)
+        return message.platform == .android ? Color(red: 0.20, green: 0.68, blue: 0.36) : Color(white: 0.91)
     }
 
     var body: some View {
@@ -288,7 +342,7 @@ private struct MessageBubble: View {
             if message.isOutgoing { Spacer(minLength: 56) }
             Text(message.text)
                 .font(.system(size: 16))
-                .foregroundStyle(message.isOutgoing || message.platform == .android ? .white : .primary)
+                .foregroundStyle(message.isOutgoing || message.platform == .android ? .white : .black)
                 .padding(.horizontal, 13)
                 .padding(.vertical, 9)
                 .background(bubbleColor)
@@ -300,40 +354,73 @@ private struct MessageBubble: View {
 }
 
 private struct ComposeMessageView: View {
-    @Environment(\.dismiss) private var dismiss
+    var onCancel: () -> Void
+    var onSend: (String, String, ChatPlatform) -> Void
     @State private var recipient = ""
     @State private var message = ""
     @State private var isAndroid = false
-    var onSend: (String, String, ChatPlatform) -> Void
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section("To:") {
-                    TextField("Name", text: $recipient)
-                    Toggle("Android contact", isOn: $isAndroid)
+        VStack(spacing: 0) {
+            HStack {
+                Button("Cancel", action: onCancel)
+                    .font(.system(size: 17))
+                Spacer()
+                Text("New Message")
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(.black)
+                Spacer()
+                Button("Send") {
+                    let name = recipient.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let text = message.trimmingCharacters(in: .whitespacesAndNewlines)
+                    guard !name.isEmpty, !text.isEmpty else { return }
+                    onSend(name, text, isAndroid ? .android : .iPhone)
                 }
-                Section("Message") {
-                    TextField("Text message", text: $message, axis: .vertical)
-                        .lineLimit(2...5)
-                }
+                .font(.system(size: 17, weight: .semibold))
+                .disabled(recipient.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
             }
-            .navigationTitle("New Message")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Send") {
-                        let name = recipient.trimmingCharacters(in: .whitespacesAndNewlines)
-                        let text = message.trimmingCharacters(in: .whitespacesAndNewlines)
-                        guard !name.isEmpty, !text.isEmpty else { return }
-                        onSend(name, text, isAndroid ? .android : .iPhone)
-                    }
-                    .disabled(recipient.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .background(Color.white)
+            Divider()
+            FormFieldRow(label: "To:") {
+                TextField("Name", text: $recipient)
+                    .font(.system(size: 17))
+                    .foregroundStyle(.black)
             }
+            Divider()
+            Toggle(isOn: $isAndroid) {
+                Text("Android contact")
+                    .font(.system(size: 16))
+                    .foregroundStyle(.black)
+            }
+            .tint(Color(red: 0.0, green: 0.48, blue: 1.0))
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            Divider()
+            TextField("Text message", text: $message, axis: .vertical)
+                .lineLimit(3...8)
+                .font(.system(size: 17))
+                .foregroundStyle(.black)
+                .padding(16)
+            Spacer()
         }
+        .background(Color.white)
+    }
+}
+
+private struct FormFieldRow<Content: View>: View {
+    let label: String
+    @ViewBuilder var content: Content
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Text(label)
+                .foregroundStyle(Color.gray)
+            content
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(Color.white)
     }
 }
