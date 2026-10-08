@@ -24,7 +24,10 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -94,6 +97,9 @@ private fun iClassicMsgApp() {
     val conversations = remember { mutableStateListOf<Conversation>().apply { addAll(seedConversations) } }
     var selectedConversationId by remember { mutableStateOf<Int?>(null) }
     var query by remember { mutableStateOf("") }
+    var showingNewConversation by remember { mutableStateOf(false) }
+    var newRecipient by remember { mutableStateOf("") }
+    var firstMessage by remember { mutableStateOf("") }
     val selected = conversations.firstOrNull { it.id == selectedConversationId }
 
     if (selected == null) {
@@ -130,7 +136,7 @@ private fun iClassicMsgApp() {
                 }
             }
             FloatingActionButton(
-                onClick = { query = "" },
+                onClick = { showingNewConversation = true },
                 modifier = Modifier.align(Alignment.BottomEnd).padding(22.dp),
                 containerColor = Color(0xFF1A73E8),
                 contentColor = Color.White
@@ -150,6 +156,49 @@ private fun iClassicMsgApp() {
                 )
                 val index = conversations.indexOfFirst { it.id == selected.id }
                 if (index >= 0) conversations[index] = updated
+            }
+        )
+    }
+
+    if (selected == null && showingNewConversation) {
+        AlertDialog(
+            onDismissRequest = { showingNewConversation = false },
+            title = { Text("New conversation") },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    androidx.compose.material3.OutlinedTextField(
+                        value = newRecipient,
+                        onValueChange = { newRecipient = it },
+                        label = { Text("Contact name") },
+                        singleLine = true
+                    )
+                    androidx.compose.material3.OutlinedTextField(
+                        value = firstMessage,
+                        onValueChange = { firstMessage = it },
+                        label = { Text("First message") }
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    val name = newRecipient.trim()
+                    val message = firstMessage.trim()
+                    if (name.isNotEmpty() && message.isNotEmpty()) {
+                        val newId = (conversations.maxOfOrNull { it.id } ?: 0) + 1
+                        val created = Conversation(
+                            newId, name, message, "now", Color(0xFF4285F4),
+                            listOf(ChatMessage(message, outgoing = true, fromAndroid = false))
+                        )
+                        conversations.add(0, created)
+                        selectedConversationId = newId
+                        newRecipient = ""
+                        firstMessage = ""
+                        showingNewConversation = false
+                    }
+                }) { Text("Create") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showingNewConversation = false }) { Text("Cancel") }
             }
         )
     }
