@@ -27,6 +27,7 @@ private struct ChatMessage: Identifiable {
 struct MessagesListView: View {
     @State private var searchText = ""
     @State private var selectedChat: Chat?
+    @State private var showingConversation = false
     @State private var showingCompose = false
     @State private var chats: [Chat] = [
         Chat(name: "Alex Morgan", preview: "That sounds good! See you then.", time: "now",
@@ -68,6 +69,7 @@ struct MessagesListView: View {
                 ForEach(filteredChats) { chat in
                     Button {
                         selectedChat = chat
+                        showingConversation = true
                     } label: {
                         ChatRow(chat: chat)
                     }
@@ -121,10 +123,13 @@ struct MessagesListView: View {
                 .background(Color(.systemBackground))
             }
             .toolbar(.hidden, for: .navigationBar)
-            .navigationDestination(item: $selectedChat) { chat in
-                ConversationView(chat: chat) { updatedChat in
-                    if let index = chats.firstIndex(where: { $0.id == updatedChat.id }) {
-                        chats[index] = updatedChat
+            .navigationDestination(isPresented: $showingConversation) {
+                if let chat = selectedChat {
+                    ConversationView(chat: chat) { updatedChat in
+                        if let index = chats.firstIndex(where: { $0.id == updatedChat.id }) {
+                            chats[index] = updatedChat
+                            selectedChat = updatedChat
+                        }
                     }
                 }
             }
@@ -142,6 +147,7 @@ struct MessagesListView: View {
                     chats.insert(newChat, at: 0)
                     showingCompose = false
                     selectedChat = newChat
+                    showingConversation = true
                 }
             }
         }
