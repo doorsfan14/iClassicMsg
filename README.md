@@ -1,13 +1,14 @@
 # iClassicMsg
 
-A revival of the classic iMessage experience, bringing back the nostalgic iOS 18 Messages interface with support for both iPhone and Android.
+A 1:1 recreation of the classic iOS 18 Messages experience, with cross-platform messaging support for iPhone and Android.
 
-iClassicMsg brings a familiar messaging experience to both platforms without making them look identical. The iPhone interface takes inspiration from the classic Apple Messages design, while the Android interface follows the familiar look and feel of Google Messages.
+iClassicMsg recreates the classic iOS 18 Messages interface on iPhone as closely as possible, while the Android client uses a Google Messages-inspired design. Both platforms can take part in the same conversations without forcing their interfaces to look identical.
 
 ## Table of contents
 
 - [About iClassicMsg](#about-iclassicmsg)
-- [A familiar experience on every platform](#a-familiar-experience-on-every-platform)
+- [A 1:1 recreation on iPhone](#a-1-to-1-recreation-on-iphone)
+- [Android](#android)
 - [Bubble colors](#bubble-colors)
 - [Design](#design)
 - [Open source](#open-source)
@@ -16,27 +17,19 @@ iClassicMsg brings a familiar messaging experience to both platforms without mak
 
 ## About iClassicMsg
 
-Remember the classic Messages experience? iClassicMsg brings that familiar look and feel to a cross-platform messaging app, making conversations between iPhone and Android users feel natural.
-
-The idea is simple: a classic Messages-inspired experience on iPhone, a familiar Google Messages-inspired experience on Android, and one place to chat with people on either platform.
+iClassicMsg brings back the classic iOS 18 Messages experience in a standalone cross-platform messaging app. The iPhone client aims for a 1:1 recreation of that interface, while Android gets its own Google Messages-inspired client.
 
 iClassicMsg is a standalone app. It does not replace the Messages app that comes with an iPhone.
 
-## A familiar experience on every platform
+## A 1:1 recreation on iPhone
 
-### iPhone
+The iPhone interface recreates the iOS 18-era Messages app, including its classic conversation layout, message bubbles, navigation, and overall appearance.
 
-The iPhone interface draws inspiration from the iOS 18-era Messages app, with familiar conversation layouts, message bubbles, navigation, and a clean, straightforward appearance.
+The design stays with the classic iOS look rather than the newer Liquid Glass style. SwiftUI and custom components help keep the interface consistent on newer versions of iOS.
 
-The design emphasizes the classic iOS look rather than the newer Liquid Glass style. SwiftUI and custom components help keep the interface consistent on newer versions of iOS.
+## Android
 
-### Android
-
-The Android interface takes inspiration from Google Messages and familiar Android design conventions. It is designed to feel at home on Android instead of simply copying the iPhone interface.
-
-### One shared experience
-
-iPhone and Android users can be part of the same messaging experience while each app keeps the look and interactions that make sense for its platform.
+The Android interface follows a Google Messages-inspired design and Android conventions. It is designed to feel at home on Android instead of copying the iPhone interface.
 
 ## Bubble colors
 
@@ -51,13 +44,13 @@ The colors are a visual distinction within iClassicMsg. They do not indicate tha
 
 iClassicMsg is built around a few simple principles:
 
-- **Classic appearance.** Bring back the familiar iOS 18-era Messages aesthetic.
-- **Native to each platform.** Keep the iPhone and Android experiences comfortable and recognizable.
+- **1:1 iPhone recreation.** Reproduce the classic iOS 18 Messages interface as closely as possible.
+- **Native to each platform.** Keep the Android client aligned with Android design conventions.
 - **Simple and readable.** Make conversations easy to follow.
 - **Consistent messaging.** Keep the experience coherent across both platforms.
 - **Focused interface.** Keep attention on people and conversations.
 
-The goal is not to make Android pretend to be iOS or iOS pretend to be Android. Each platform gets its own familiar interface, while both remain part of the iClassicMsg experience.
+The iPhone client recreates the classic Messages interface, while Android keeps its own platform-appropriate design. Both remain part of the same iClassicMsg messaging experience.
 
 ## Open source
 
@@ -78,7 +71,7 @@ Feedback helps make software better. When reporting a bug, include as much usefu
 
 Please avoid sharing private conversations or other personal information in screenshots and reports.
 
-Suggestions about the iPhone and Android interfaces are both welcome. The aim is to make each client feel right for its platform while keeping the overall experience consistent.
+Suggestions about the iPhone and Android clients are both welcome. The aim is to preserve the 1:1 iOS 18 Messages recreation on iPhone while keeping the Android client right for its platform.
 
 ## A note about Apple
 
@@ -86,4 +79,4 @@ iClassicMsg is an independent project inspired by the classic Messages experienc
 
 ---
 
-**iClassicMsg — the classic Messages experience, reimagined for iPhone and Android.**
+**iClassicMsg — a 1:1 recreation of classic iOS 18 Messages for iPhone, with Android support.**
