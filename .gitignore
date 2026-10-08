@@ -1,0 +1,19 @@
+# macOS / Xcode
+.DS_Store
+DerivedData/
+*.xcuserstate
+xcuserdata/
+iOS/iClassicMsg.xcodeproj/
+
+# Android / Gradle
+.gradle/
+**/build/
+local.properties
+.idea/
+*.iml
+
+# Signing and local-only configuration
+*.mobileprovision
+*.p12
+google-services.json
+GoogleService-Info.plist
