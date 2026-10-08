@@ -1,0 +1,27 @@
+name: iOS Build
+
+on:
+  push:
+    paths:
+      - "iOS/**"
+      - ".github/workflows/ios.yml"
+  pull_request:
+    paths:
+      - "iOS/**"
+      - ".github/workflows/ios.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        working-directory: iOS
+        run: xcodegen generate --spec project.yml
+      - name: Build for iOS Simulator
+        working-directory: iOS
+        run: xcodebuild -project iClassicMsg.xcodeproj -scheme iClassicMsg -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO build
