@@ -11,6 +11,9 @@ on:
       - ".github/workflows/ios.yml"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: macos-15
@@ -35,6 +38,8 @@ jobs:
             -configuration Debug \
             -derivedDataPath build \
             CODE_SIGNING_ALLOWED=NO \
+            CURRENT_PROJECT_VERSION="${GITHUB_RUN_NUMBER}" \
+            MARKETING_VERSION="0.1.0" \
             build
 
       - name: Ensure Firebase config is bundled
@@ -61,6 +66,22 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+
+      - name: Publish iOS build release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ios-build-${{ github.run_number }}
+          name: iClassicMsg iOS build ${{ github.run_number }}
+          prerelease: true
+          body: |
+            Automated unsigned iOS build of iClassicMsg.
+
+            This IPA must be installed manually with a compatible sideloading tool. iOS does not allow an app to silently replace its installed executable.
+          files: iOS/iClassicMsg-unsigned.ipa
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Build for iOS Simulator
         working-directory: iOS
         run: |
@@ -70,4 +91,6 @@ jobs:
             -sdk iphonesimulator \
             -configuration Debug \
             CODE_SIGNING_ALLOWED=NO \
+            CURRENT_PROJECT_VERSION="${GITHUB_RUN_NUMBER}" \
+            MARKETING_VERSION="0.1.0" \
             build
