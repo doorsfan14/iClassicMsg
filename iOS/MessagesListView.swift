@@ -33,6 +33,8 @@ private enum ClassicMessagesStyle {
 }
 
 struct MessagesListView: View {
+    @Environment(\.openURL) private var openURL
+    @StateObject private var updateChecker = UpdateChecker()
     @State private var searchText = ""
     @State private var selectedChat: Chat?
     @State private var showingCompose = false
@@ -108,6 +110,19 @@ struct MessagesListView: View {
         .tint(ClassicMessagesStyle.blue)
         .foregroundStyle(.black)
         .preferredColorScheme(.light)
+        .task {
+            await updateChecker.checkForUpdates(silent: true)
+        }
+        .alert("iClassicMsg Updates", isPresented: $updateChecker.showAlert) {
+            if let release = updateChecker.availableRelease {
+                Button("View Release") {
+                    openURL(release.htmlURL)
+                }
+            }
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(updateChecker.statusMessage)
+        }
     }
 
     private var messagesHome: some View {
@@ -119,17 +134,30 @@ struct MessagesListView: View {
 
                 Spacer()
 
-                Button {
-                    withAnimation(.spring(response: 0.36, dampingFraction: 0.86)) {
-                        showingCompose = true
+                HStack(spacing: 10) {
+                    Button {
+                        Task { await updateChecker.checkForUpdates() }
+                    } label: {
+                        Image(systemName: updateChecker.isChecking ? "arrow.clockwise" : "arrow.down.circle")
+                            .font(.system(size: 21, weight: .regular))
+                            .frame(width: 30, height: 34)
+                            .contentShape(Rectangle())
                     }
-                } label: {
-                    Image(systemName: "square.and.pencil")
-                        .font(.system(size: 21, weight: .regular))
-                        .frame(width: 34, height: 34)
-                        .contentShape(Rectangle())
+                    .disabled(updateChecker.isChecking)
+                    .accessibilityLabel("Check for Updates")
+
+                    Button {
+                        withAnimation(.spring(response: 0.36, dampingFraction: 0.86)) {
+                            showingCompose = true
+                        }
+                    } label: {
+                        Image(systemName: "square.and.pencil")
+                            .font(.system(size: 21, weight: .regular))
+                            .frame(width: 34, height: 34)
+                            .contentShape(Rectangle())
+                    }
+                    .accessibilityLabel("New message")
                 }
-                .accessibilityLabel("New message")
             }
             .padding(.horizontal, 18)
             .padding(.top, 8)
@@ -143,6 +171,33 @@ struct MessagesListView: View {
             .padding(.horizontal, 18)
             .padding(.top, 8)
             .padding(.bottom, 12)
+
+            if let release = updateChecker.availableRelease {
+                HStack(spacing: 10) {
+                    Image(systemName: "arrow.down.circle.fill")
+                        .font(.system(size: 23))
+                        .foregroundStyle(ClassicMessagesStyle.blue)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Update Available")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundStyle(.black)
+                        Text("iClassicMsg build \(release.buildNumber) is ready")
+                            .font(.system(size: 12))
+                            .foregroundStyle(ClassicMessagesStyle.secondary)
+                    }
+                    Spacer(minLength: 4)
+                    Button("View") {
+                        openURL(release.htmlURL)
+                    }
+                    .font(.system(size: 14, weight: .semibold))
+                }
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
+                .background(ClassicMessagesStyle.search)
+                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .padding(.horizontal, 16)
+                .padding(.bottom, 8)
+            }
 
             HStack(spacing: 8) {
                 Image(systemName: "magnifyingglass")
