@@ -14,6 +14,7 @@ targets:
     sources:
       - path: iClassicMsgApp.swift
       - path: MessagesListView.swift
+      - path: UpdateChecker.swift
     resources:
       - path: GoogleService-Info.plist
     dependencies:
